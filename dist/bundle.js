@@ -5178,7 +5178,7 @@ var loadWordCardList = function () { return __awaiter(void 0, void 0, void 0, fu
     });
 }); };
 window.onload = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var addButton, addLink, addDialog;
+    var addButton, addLink, addDialog, exportButton, importButton;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, loadWordCardList()];
@@ -5186,7 +5186,7 @@ window.onload = function () { return __awaiter(void 0, void 0, void 0, function 
                 _a.sent();
                 addButton = document.querySelector("#add-button");
                 addButton.addEventListener("click", function () { return __awaiter(void 0, void 0, void 0, function () {
-                    var word, translation, id, addDialog;
+                    var word, translation, addDialog;
                     return __generator(this, function (_a) {
                         switch (_a.label) {
                             case 0:
@@ -5200,7 +5200,7 @@ window.onload = function () { return __awaiter(void 0, void 0, void 0, function 
                                         numberOfRemindTimes: 0,
                                     })];
                             case 1:
-                                id = _a.sent();
+                                _a.sent();
                                 return [4 /*yield*/, loadWordCardList()];
                             case 2:
                                 _a.sent();
@@ -5222,6 +5222,62 @@ window.onload = function () { return __awaiter(void 0, void 0, void 0, function 
                     }
                     addDialog.setAttribute("style", "display:none");
                 });
+                exportButton = document.querySelector("#export-button");
+                exportButton.addEventListener("click", function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var wordCards, json, downLoadLink;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0: return [4 /*yield*/, db.wordCards.toArray()];
+                            case 1:
+                                wordCards = _a.sent();
+                                json = JSON.stringify(wordCards, null, "   ");
+                                downLoadLink = document.createElement("a");
+                                downLoadLink.download = "sordCards";
+                                downLoadLink.href = URL.createObjectURL(new Blob([json]));
+                                downLoadLink.click();
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                importButton = document.querySelector("#import-button");
+                importButton.addEventListener("click", function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var fileTag, file, fileReader;
+                    return __generator(this, function (_a) {
+                        fileTag = document.querySelector("#import-file");
+                        file = fileTag.files[0];
+                        fileReader = new FileReader();
+                        fileReader.readAsText(file, "utf-8");
+                        fileReader.onloadend = function () { return __awaiter(void 0, void 0, void 0, function () {
+                            var importJson, wordLikeList, _i, wordLikeList_1, wordLike;
+                            return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        importJson = fileReader.result;
+                                        wordLikeList = JSON.parse(importJson);
+                                        _i = 0, wordLikeList_1 = wordLikeList;
+                                        _a.label = 1;
+                                    case 1:
+                                        if (!(_i < wordLikeList_1.length)) return [3 /*break*/, 4];
+                                        wordLike = wordLikeList_1[_i];
+                                        return [4 /*yield*/, db.wordCards.add({
+                                                word: wordLike.word,
+                                                translation: wordLike.translation,
+                                                createDate: new Date(wordLike.createDate),
+                                                numberOfRemindTimes: 0,
+                                            })];
+                                    case 2:
+                                        _a.sent();
+                                        _a.label = 3;
+                                    case 3:
+                                        _i++;
+                                        return [3 /*break*/, 1];
+                                    case 4: return [2 /*return*/];
+                                }
+                            });
+                        }); };
+                        return [2 /*return*/];
+                    });
+                }); });
                 return [2 /*return*/];
         }
     });

@@ -32,7 +32,7 @@ window.onload = async () => {
     const translation = (<HTMLInputElement>(
       document.querySelector("#translation-field")
     )).value;
-    const id = await db.wordCards.add({
+    await db.wordCards.add({
       word: word,
       translation: translation,
       createDate: new Date(),
@@ -55,5 +55,36 @@ window.onload = async () => {
       return false;
     }
     addDialog!.setAttribute("style", "display:none");
+  });
+
+  const exportButton = document.querySelector("#export-button");
+  exportButton!.addEventListener("click", async () => {
+    const wordCards = await db.wordCards.toArray();
+    var json = JSON.stringify(wordCards, null, "   ");
+    var downLoadLink = document.createElement("a");
+    downLoadLink.download = "sordCards";
+    downLoadLink.href = URL.createObjectURL(new Blob([json]));
+    downLoadLink.click();
+  });
+
+  const importButton = document.querySelector("#import-button");
+  importButton!.addEventListener("click", async () => {
+    const fileTag = <HTMLInputElement>document.querySelector("#import-file");
+    const file = fileTag!.files![0];
+
+    const fileReader = new FileReader();
+    fileReader.readAsText(file, "utf-8");
+    fileReader.onloadend = async () => {
+      const importJson = <string>fileReader.result;
+      const wordLikeList = JSON.parse(importJson);
+      for (const wordLike of wordLikeList) {
+        await db.wordCards.add({
+          word: wordLike.word,
+          translation: wordLike.translation,
+          createDate: new Date(wordLike.createDate),
+          numberOfRemindTimes: 0,
+        });
+      }
+    };
   });
 };
