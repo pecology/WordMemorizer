@@ -5065,10 +5065,10 @@ module.exports = g;
 
 /***/ }),
 
-/***/ "./src/index.ts":
-/*!**********************!*\
-  !*** ./src/index.ts ***!
-  \**********************/
+/***/ "./src/Database.ts":
+/*!*************************!*\
+  !*** ./src/Database.ts ***!
+  \*************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -5100,45 +5100,132 @@ var Database = /** @class */ (function (_super) {
     function Database() {
         var _this = _super.call(this, "Database") || this;
         _this.version(1).stores({
-            wordCards: "++id,word,translation,createDate,lastMemolizeDate,numberOfRemindTimes"
+            wordCards: "++id,word,translation,createDate,lastMemolizeDate,numberOfRemindTimes",
         });
         return _this;
     }
     return Database;
 }(dexie_1.default));
-var db = new Database();
-db.wordCards.add({ word: "word", translation: "単語", createDate: new Date(), numberOfRemindTimes: 0 });
-document.onload = function () {
-    TextDecoderStream;
+exports.Database = Database;
+
+
+/***/ }),
+
+/***/ "./src/index.ts":
+/*!**********************!*\
+  !*** ./src/index.ts ***!
+  \**********************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-//
-// Manipulate and Query Database
-//
-// if(db.friends !== undefined) {
-//   db.friends.add({name: "Josephine", age: 21}).then((value)=>{
-//     if(db.friends !== undefined) return db.friends.where("age").below(25).toArray();
-//     const frend:IFriend = {};
-//     return [frend];
-//   }).then(youngFriends => {
-//     alert ("My young friends: " + JSON.stringify(youngFriends));
-//   }).catch(e => {
-//     alert("error: " + e.stack || e);
-//   });
-// }
-var Student = /** @class */ (function () {
-    function Student(firstName, middleInitial, lastName) {
-        this.firstName = firstName;
-        this.middleInitial = middleInitial;
-        this.lastName = lastName;
-        this.fullName = firstName + " " + middleInitial + " " + lastName;
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
-    return Student;
-}());
-function greeter(person) {
-    return "Hello, " + person.firstName + " " + person.lastName;
-}
-var user = new Student("Jane", "M.", "User");
-document.body.innerHTML = greeter(user);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var Database_1 = __webpack_require__(/*! ./Database */ "./src/Database.ts");
+var db = new Database_1.Database();
+var loadWordCardList = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var wordCards, tableBody;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, db.wordCards.toArray()];
+            case 1:
+                wordCards = _a.sent();
+                tableBody = document.querySelector("#word-card-list > tbody");
+                tableBody.innerHTML = "";
+                wordCards.forEach(function (wordCard) {
+                    var htmlLiteral = "\n        <tr>\n          <td>" + wordCard.word + "</td>\n          <td>" + wordCard.translation + "</td>\n          <td>" + wordCard.createDate.getFullYear() + "/" + (wordCard.createDate.getMonth() +
+                        1) + "/\n          " + wordCard.createDate.getDate() + "</td>\n          <td>" + wordCard.lastMemolizedDate + "</td>\n          <td>" + wordCard.numberOfRemindTimes + "</td>\n        </tr>\n      ";
+                    tableBody.innerHTML += htmlLiteral;
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };
+window.onload = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var addButton, addLink, addDialog;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, loadWordCardList()];
+            case 1:
+                _a.sent();
+                addButton = document.querySelector("#add-button");
+                addButton.addEventListener("click", function () { return __awaiter(void 0, void 0, void 0, function () {
+                    var word, translation, id, addDialog;
+                    return __generator(this, function (_a) {
+                        switch (_a.label) {
+                            case 0:
+                                word = document.querySelector("#word-field")
+                                    .value;
+                                translation = (document.querySelector("#translation-field")).value;
+                                return [4 /*yield*/, db.wordCards.add({
+                                        word: word,
+                                        translation: translation,
+                                        createDate: new Date(),
+                                        numberOfRemindTimes: 0,
+                                    })];
+                            case 1:
+                                id = _a.sent();
+                                return [4 /*yield*/, loadWordCardList()];
+                            case 2:
+                                _a.sent();
+                                addDialog = document.querySelector("#overlay");
+                                addDialog.setAttribute("style", "display:none");
+                                return [2 /*return*/];
+                        }
+                    });
+                }); });
+                addLink = document.getElementById("add-link");
+                addLink.addEventListener("click", function () {
+                    var addDialog = document.querySelector("#overlay");
+                    addDialog.setAttribute("style", "display:inline");
+                });
+                addDialog = document.querySelector("#overlay");
+                addDialog.addEventListener("click", function (event) {
+                    if (event.target.id !== "overlay") {
+                        return false;
+                    }
+                    addDialog.setAttribute("style", "display:none");
+                });
+                return [2 /*return*/];
+        }
+    });
+}); };
 
 
 /***/ })

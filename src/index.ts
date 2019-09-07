@@ -1,5 +1,3 @@
-import Dexie from "dexie";
-import WordCard from "./WordCard";
 import { Database } from "./Database";
 
 var db = new Database();
