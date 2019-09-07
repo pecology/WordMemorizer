@@ -3,7 +3,7 @@ import { Database } from "./Database";
 var db = new Database();
 
 const loadWordCardList = async () => {
-  const wordCards = await db.wordCards.toArray();
+  const wordCards = await db.wordCards.orderBy("word").toArray();
   const tableBody = document.querySelector("#word-card-list > tbody");
   tableBody!.innerHTML = "";
   wordCards.forEach(wordCard => {
@@ -84,6 +84,7 @@ window.onload = async () => {
           createDate: new Date(wordLike.createDate),
           numberOfRemindTimes: 0,
         });
+        await loadWordCardList();
       }
     };
   });

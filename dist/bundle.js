@@ -5163,7 +5163,7 @@ var loadWordCardList = function () { return __awaiter(void 0, void 0, void 0, fu
     var wordCards, tableBody;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, db.wordCards.toArray()];
+            case 0: return [4 /*yield*/, db.wordCards.orderBy("word").toArray()];
             case 1:
                 wordCards = _a.sent();
                 tableBody = document.querySelector("#word-card-list > tbody");
@@ -5257,7 +5257,7 @@ window.onload = function () { return __awaiter(void 0, void 0, void 0, function 
                                         _i = 0, wordLikeList_1 = wordLikeList;
                                         _a.label = 1;
                                     case 1:
-                                        if (!(_i < wordLikeList_1.length)) return [3 /*break*/, 4];
+                                        if (!(_i < wordLikeList_1.length)) return [3 /*break*/, 5];
                                         wordLike = wordLikeList_1[_i];
                                         return [4 /*yield*/, db.wordCards.add({
                                                 word: wordLike.word,
@@ -5267,11 +5267,14 @@ window.onload = function () { return __awaiter(void 0, void 0, void 0, function 
                                             })];
                                     case 2:
                                         _a.sent();
-                                        _a.label = 3;
+                                        return [4 /*yield*/, loadWordCardList()];
                                     case 3:
+                                        _a.sent();
+                                        _a.label = 4;
+                                    case 4:
                                         _i++;
                                         return [3 /*break*/, 1];
-                                    case 4: return [2 /*return*/];
+                                    case 5: return [2 /*return*/];
                                 }
                             });
                         }); };
