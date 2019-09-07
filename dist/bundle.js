@@ -5092,40 +5092,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var dexie_1 = __importDefault(__webpack_require__(/*! dexie */ "./node_modules/dexie/dist/dexie.es.js"));
-var sayHello = function (name) {
-    return "Hello " + name + "!";
-};
-console.log(sayHello('TS!2ddfadfs'));
 //
 // Declare Database
 //
-var FriendDatabase = /** @class */ (function (_super) {
-    __extends(FriendDatabase, _super);
-    function FriendDatabase() {
-        var _this = _super.call(this, "FriendsDatabase") || this;
+var Database = /** @class */ (function (_super) {
+    __extends(Database, _super);
+    function Database() {
+        var _this = _super.call(this, "Database") || this;
         _this.version(1).stores({
-            friends: "++id,name,age"
+            wordCards: "++id,word,translation,createDate,lastMemolizeDate,numberOfRemindTimes"
         });
         return _this;
     }
-    return FriendDatabase;
+    return Database;
 }(dexie_1.default));
-var db = new FriendDatabase();
+var db = new Database();
+db.wordCards.add({ word: "word", translation: "単語", createDate: new Date(), numberOfRemindTimes: 0 });
+document.onload = function () {
+    TextDecoderStream;
+};
 //
 // Manipulate and Query Database
 //
-if (db.friends !== undefined) {
-    db.friends.add({ name: "Josephine", age: 21 }).then(function (value) {
-        if (db.friends !== undefined)
-            return db.friends.where("age").below(25).toArray();
-        var frend = {};
-        return [frend];
-    }).then(function (youngFriends) {
-        alert("My young friends: " + JSON.stringify(youngFriends));
-    }).catch(function (e) {
-        alert("error: " + e.stack || false);
-    });
+// if(db.friends !== undefined) {
+//   db.friends.add({name: "Josephine", age: 21}).then((value)=>{
+//     if(db.friends !== undefined) return db.friends.where("age").below(25).toArray();
+//     const frend:IFriend = {};
+//     return [frend];
+//   }).then(youngFriends => {
+//     alert ("My young friends: " + JSON.stringify(youngFriends));
+//   }).catch(e => {
+//     alert("error: " + e.stack || e);
+//   });
+// }
+var Student = /** @class */ (function () {
+    function Student(firstName, middleInitial, lastName) {
+        this.firstName = firstName;
+        this.middleInitial = middleInitial;
+        this.lastName = lastName;
+        this.fullName = firstName + " " + middleInitial + " " + lastName;
+    }
+    return Student;
+}());
+function greeter(person) {
+    return "Hello, " + person.firstName + " " + person.lastName;
 }
+var user = new Student("Jane", "M.", "User");
+document.body.innerHTML = greeter(user);
 
 
 /***/ })
