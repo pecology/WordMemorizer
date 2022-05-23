@@ -35,6 +35,6 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
-    "dexie": "^2.0.4"
+    "dexie": "^3.2.2"
   }
 }
